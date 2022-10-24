@@ -1,0 +1,319 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample NODEJS server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).",
+    "version": "1.0.0",
+    "title": "Swagger NodeJS base",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:9000",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "auth",
+      "description": "authorization",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    },
+    {
+      "name": "export",
+      "description": "Export PDF"
+    }
+  ],
+  "schemes": ["http", "https"],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Create new user",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User information object that needs to be create",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Login",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User information object that needs to be login",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "Logs out current logged in user session",
+        "description": "",
+        "operationId": "logoutUser",
+        "produces": ["application/xml", "application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/refresh-token": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Get new token",
+        "description": "",
+        "operationId": "refreshToken",
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User information object that needs to be login",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "refresh_token": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user/{username}": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get user by user name",
+        "description": "",
+        "operationId": "getUserByName",
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": ["user"],
+        "summary": "Updated user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["user"],
+        "summary": "Delete user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteUser",
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/export": {
+      "get": {
+        "tags": ["export"],
+        "summary": "Export file PDF",
+        "description": "",
+        "produces": ["application/xml", "application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

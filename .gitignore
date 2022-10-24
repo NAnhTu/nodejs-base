@@ -1,0 +1,8 @@
+.env
+.env-example
+node_modules/
+logs/
+.idea
+package-lock.json
+yarn.lock
+yarn-error.log

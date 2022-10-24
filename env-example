@@ -1,0 +1,10 @@
+PORT=9000
+# Timezone
+TIME_ZONE=+09:00
+
+# Database
+DB_NAME=nodejs-base
+DB_USER=root
+DB_PASSWORD=root
+DB_HOST=localhost
+
