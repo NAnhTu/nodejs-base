@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       role: {
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -33,7 +33,7 @@ module.exports = {
       }
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('users');
   }
 };

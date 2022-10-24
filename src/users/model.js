@@ -10,7 +10,7 @@ let model = {
     })
   },
   createUser: async (user) => {
-    return await models.users.create(user)
+    return models.users.create(user)
   },
 }
 
