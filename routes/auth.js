@@ -2,11 +2,11 @@ const express = require('express')
 const router = express.Router()
 const authController = require('../src/auth/controller');
 
-router.post('/register', authController.register)
+router.post('/sign-up', authController.signUp)
 
-router.post('/login', authController.login)
+router.post('/sign-in', authController.signIn)
 
-router.post('/logout', authController.logout)
+router.post('/sign-out', authController.signOut)
 
 router.post('/refresh-token', authController.refreshToken)
 

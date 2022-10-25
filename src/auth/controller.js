@@ -6,7 +6,7 @@ const jwtHelper = require("../../helper/jwt.helper");
 
 
 let controller = {
-  register: async (req, res) => {
+  signUp: async (req, res) => {
     try {
       const {name, email, password} = req.body
       const user = await userModel.getUser(email);
@@ -25,11 +25,15 @@ let controller = {
         if (!createUser) {
           return res
             .status(status.BAD_REQUEST)
-            .send('Có lỗi trong quá trình tạo tài khoản, vui lòng thử lại.');
+            .send({
+              message: 'error500'
+            });
         }
         return res.status(status.CREATED).send({name});
       } else {
-        res.status(status.BAD_REQUEST).send('Tên tài khoản đã tồn tại.');
+        res.status(status.BAD_REQUEST).send({
+          message: 'userExisted'
+        });
       }
     } catch (e) {
       console.log(e);
@@ -37,20 +41,25 @@ let controller = {
     }
   },
 
-  login: async (req, res) => {
+  signIn: async (req, res) => {
     try {
       const email = req.body.email.toLowerCase();
       const password = req.body.password;
       const user = await userModel.getUser(email);
+      console.log(user);
 
       if (!user) return res.status(status.BAD_REQUEST)
-        .send('User không tồn tại.');
+        .send({
+          message: 'userNotExist'
+        });
 
       const isPasswordValid = passwordHelper.compare(password, user.password);
 
       console.log(isPasswordValid);
       if (!isPasswordValid) {
-        return res.status(status.BAD_REQUEST).send('Mật khẩu không chính xác.');
+        return res.status(status.BAD_REQUEST).send({
+          message: 'incorrectPassword'
+        });
       }
 
       const accessToken = await jwtHelper.generateToken(user, process.env.ACCESS_TOKEN_SECRET, process.env.ACCESS_TOKEN_LIFE);
@@ -112,36 +121,7 @@ let controller = {
     }
   },
 
-  checkToken: async (req, res) => {
-    try {
-      // Lấy access token từ header
-      const bearerHeader = req.headers['authorization'];
-      if (!bearerHeader) {
-        return res.status(status.BAD_REQUEST).send('Không tìm thấy access token.');
-      }
-      const bearer = bearerHeader.split(' ')[1];
-
-      // Decode access token đó
-      const decoded = await jwtHelper.decodeToken(bearer, process.env.ACCESS_TOKEN_SECRET);
-      console.log(decoded);
-      if (!decoded) {
-        return res.status(status.BAD_REQUEST).send('Access token không hợp lệ.');
-      }
-
-      const email = decoded.data.email; // Lấy username từ payload
-
-      const user = await userModel.getUser(email);
-      if (!user) {
-        return res.status(status.BAD_REQUEST).send('User không tồn tại.');
-      }
-      return res.status(status.OK).json({user});
-    } catch (e) {
-      console.log(e);
-      res.status(status.INTERNAL_SERVER_ERROR).json(e);
-    }
-  },
-
-  logout: async (req, res) => {
+  signOut: async (req, res) => {
 
   }
 }

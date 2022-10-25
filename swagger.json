@@ -35,7 +35,7 @@
   ],
   "schemes": ["http", "https"],
   "paths": {
-    "/auth/register": {
+    "/auth/sign-up": {
       "post": {
         "tags": ["auth"],
         "summary": "Create new user",
@@ -76,17 +76,17 @@
         }
       }
     },
-    "/auth/login": {
+    "/auth/sign-in": {
       "post": {
         "tags": ["auth"],
-        "summary": "Login",
+        "summary": "Sign In",
         "consumes": ["application/json", "application/xml"],
         "produces": ["application/xml", "application/json"],
         "parameters": [
           {
             "in": "body",
             "name": "body",
-            "description": "User information object that needs to be login",
+            "description": "User information object that needs to be sign in",
             "required": true,
             "schema": {
               "type": "object",
@@ -114,7 +114,7 @@
         }
       }
     },
-    "/auth/logout": {
+    "/auth/sign-out": {
       "get": {
         "tags": ["auth"],
         "summary": "Logs out current logged in user session",

@@ -1,4 +1,5 @@
 const express = require('express')
+const userController = require("../src/users/controller");
 const router = express.Router()
 
 /**
@@ -41,5 +42,7 @@ const router = express.Router()
 router.get('/', function (req, res) {
   res.send('respond with a resource')
 })
+
+router.get('/check-token', userController.checkToken)
 
 module.exports = router
