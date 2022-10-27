@@ -2,7 +2,7 @@ const models = require('../../models/index')
 let model = {
   getUser: async (email) => {
     return await models.users.findOne({
-      attributes: ['name', 'email', 'password'],
+      attributes: ['code', 'name', 'email', 'role'],
       where: {
         email: email,
       },

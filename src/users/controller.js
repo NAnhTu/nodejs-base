@@ -8,26 +8,24 @@ let controller = {
             // Lấy access token từ header
             const bearerHeader = req.headers['authorization'];
             if (!bearerHeader) {
-                return res.status(status.BAD_REQUEST).send('Không tìm thấy access token.');
+                return res.status(status.BAD_REQUEST).send({message: 'error'});
             }
             const bearer = bearerHeader.split(' ')[1];
 
             // Decode access token đó
             const decoded = await jwtHelper.decodeToken(bearer, process.env.ACCESS_TOKEN_SECRET);
-            console.log(decoded);
             if (!decoded) {
-                return res.status(status.BAD_REQUEST).send('Access token không hợp lệ.');
+                return res.status(status.BAD_REQUEST).send({message: 'error'});
             }
 
             const email = decoded.data.email; // Lấy username từ payload
 
             const user = await userModel.getUser(email);
             if (!user) {
-                return res.status(status.BAD_REQUEST).send('User không tồn tại.');
+                return res.status(status.BAD_REQUEST).send({message: 'error'});
             }
-            return res.status(status.OK).json({user});
+            return res.status(status.OK).json(Object.assign(user, {token: bearer}));
         } catch (e) {
-            console.log(e);
             res.status(status.INTERNAL_SERVER_ERROR).json(e);
         }
     },

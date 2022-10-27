@@ -35,7 +35,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use('/api/auth', authRouter)
 
 app.use('/api', indexRouter)
-app.use('/users', usersRouter)
+app.use('/api/users', usersRouter)
 
 // db.authenticate()
 //   .then(() => console.log('Database connected...'))
