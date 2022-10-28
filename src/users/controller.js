@@ -24,6 +24,7 @@ let controller = {
             if (!user) {
                 return res.status(status.BAD_REQUEST).send({message: 'error'});
             }
+            delete user.password
             return res.status(status.OK).json(Object.assign(user, {token: bearer}));
         } catch (e) {
             res.status(status.INTERNAL_SERVER_ERROR).json(e);

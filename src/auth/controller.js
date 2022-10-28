@@ -46,7 +46,6 @@ let controller = {
       const email = req.body.email.toLowerCase();
       const password = req.body.password;
       const user = await userModel.getUser(email);
-      console.log(user);
 
       if (!user) return res.status(status.BAD_REQUEST)
         .send({
