@@ -25,7 +25,7 @@
       }
     },
     {
-      "name": "user",
+      "name": "users",
       "description": "Operations about user"
     },
     {
@@ -171,9 +171,9 @@
         }
       }
     },
-    "/user/{username}": {
+    "/users/{username}": {
       "get": {
-        "tags": ["user"],
+        "tags": ["users"],
         "summary": "Get user by user name",
         "description": "",
         "operationId": "getUserByName",
@@ -208,25 +208,32 @@
         ]
       },
       "put": {
-        "tags": ["user"],
+        "tags": ["users"],
         "summary": "Updated user",
         "description": "This can only be done by the logged in user.",
         "operationId": "updateUser",
         "produces": ["application/xml", "application/json"],
         "parameters": [
           {
-            "name": "username",
+            "name": "user_code",
             "in": "path",
-            "description": "name that need to be updated",
+            "description": "user_code of user",
             "required": true,
             "type": "string"
           },
           {
-            "in": "body",
-            "name": "body",
-            "description": "Updated user object",
-            "required": true,
-            "schema": {}
+            "in": "formData",
+            "name": "image",
+            "type": "file",
+            "required": false,
+            "description": "Avatar you want to update"
+          },
+          {
+            "in": "formData",
+            "name": "name",
+            "type": "string",
+            "required": false,
+            "description": "Name you want to update"
           }
         ],
         "responses": {
@@ -250,7 +257,7 @@
         ]
       },
       "delete": {
-        "tags": ["user"],
+        "tags": ["users"],
         "summary": "Delete user",
         "description": "This can only be done by the logged in user.",
         "operationId": "deleteUser",

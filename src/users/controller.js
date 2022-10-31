@@ -1,6 +1,8 @@
 const status = require("http-status");
 const jwtHelper = require("../../helper/jwt.helper");
 const userModel = require("./model");
+const fs = require("fs")
+const {uploadFile} = require('../../helper/aws.helper')
 
 let controller = {
     checkToken: async (req, res) => {
@@ -30,6 +32,31 @@ let controller = {
             res.status(status.INTERNAL_SERVER_ERROR).json(e);
         }
     },
+
+    update: async (req, res) => {
+        try {
+            const {user_code} = req.params
+            const {name} = req.body
+            let params = {
+                name
+            }
+            if (req.file) {
+                let {originalname, fileName, path} = req.file
+                if(!fileName){
+                    fileName = originalname;
+                }
+                const key = `meeting-1206/${fileName}`;
+                let data= fs.readFileSync(path);
+                const s3FileURL = process.env.AWS_S3_IMAGE + key;
+                await uploadFile(process.env.AWS_S3_IMAGE_BUCKET, key, data);
+                params.avatar = s3FileURL
+            }
+            await userModel.update(params, user_code)
+            return res.status(status.OK).json({message: 'success'})
+        } catch (e) {
+            return res.status(status.INTERNAL_SERVER_ERROR).json(e);
+        }
+    }
 }
 
 module.exports = controller

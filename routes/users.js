@@ -1,48 +1,31 @@
 const express = require('express')
-const userController = require("../src/users/controller");
+const fs = require('fs-extra')
+const {checkToken, update} = require("../src/users/controller");
+const {isAuth} = require("../src/auth/middleware");
 const router = express.Router()
 
-/**
- * @swagger
- * /api/user:
- *   get:
- *     tags:
- *       - users
- *     summary: Get current user
- *     description: Get current user
- *     produces:
- *       - application/json
- *     parameters:
- *       - in: query
- *         name: id   # Note the name is the same as in the path
- *         required: true
- *         schema:
- *            type: integer
- *            minimum: 1
- *     responses:
- *       200:
- *         description: OK
- */
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: async function (req, file, cb) {
+    let path = `./public/uploads/`;
+    let existsPath = await fs.exists(path)
+    if (!existsPath) {
+      fs.mkdirsSync(path)
+    }
+    cb(null,  path);
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
 
-/**
- * @swagger
- * /api/user/{id}:
- *   get:
- *     tags:
- *       - users
- *     summary: Get user by id
- *     description: Get user by id
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: OK
- */
+const upload = multer({ storage })
 
 router.get('/', function (req, res) {
   res.send('respond with a resource')
 })
 
-router.get('/check-token', userController.checkToken)
+router.get('/check-token', checkToken)
+router.post('/update/:user_code', isAuth, upload.single('image'), update)
 
 module.exports = router

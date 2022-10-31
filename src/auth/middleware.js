@@ -7,7 +7,9 @@ let isAuth = async (req, res, next) => {
     // Lấy access token từ header
     const bearerHeader = req.headers['authorization']
     if (!bearerHeader) {
-      return res.status(status.BAD_REQUEST).send('Không tìm thấy access token!')
+      return res.status(status.BAD_REQUEST).send({
+        message: 'error'
+      })
     }
     const bearer = bearerHeader.split(' ')[1]
     const verified = await jwtHelper.verifyToken(
@@ -17,7 +19,9 @@ let isAuth = async (req, res, next) => {
     if (!verified) {
       return res
         .status(status.UNAUTHORIZED)
-        .send('Bạn không có quyền truy cập vào tính năng này!')
+        .send({
+          message: '401'
+        })
     }
 
     req.user = await userModel.getUser(verified.data.email)
