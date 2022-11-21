@@ -1,7 +1,7 @@
-const models = require('../../models/index')
+const {user} = require('../../models/index')
 let model = {
   getUser: async (email) => {
-    return await models.users.findOne({
+    return await user.findOne({
       attributes: ['code', 'name', 'email', 'avatar', 'role', 'password'],
       where: {
         email: email,
@@ -9,18 +9,18 @@ let model = {
       raw: true,
     })
   },
-  createUser: async (user) => {
-    return models.users.create(user)
+  createUser: async (params) => {
+    return user.create(params)
   },
   update: async (params, user_code) => {
-    return await models.users.update(params,
-      {
-        where: {
-          code: user_code
-        },
-        raw: true
-      }
-    )
+    return user.update(params,
+        {
+          where: {
+            code: user_code
+          },
+          raw: true
+        }
+    );
   }
 }
 

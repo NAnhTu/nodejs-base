@@ -29,6 +29,10 @@
       "description": "Operations about user"
     },
     {
+      "name": "chat",
+      "description": "Chat"
+    },
+    {
       "name": "export",
       "description": "Export PDF"
     }
@@ -171,7 +175,7 @@
         }
       }
     },
-    "/users/{username}": {
+    "/users/{user_code}": {
       "get": {
         "tags": ["users"],
         "summary": "Get user by user name",
@@ -280,6 +284,32 @@
           },
           "404": {
             "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/chat/list-chat": {
+      "get": {
+        "tags": ["chat"],
+        "summary": "Get All List Chat",
+        "description": "",
+        "operationId": "getListChat",
+        "produces": ["application/xml", "application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request"
           },
           "500": {
             "description": "Internal server error"

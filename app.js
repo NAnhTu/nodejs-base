@@ -9,11 +9,13 @@ require('dotenv').config()
 const authRouter = require('./routes/auth')
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
+const chatRouter = require('./routes/chat')
 
 const app = express()
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./swagger.json')
 const cors = require('cors');
+const {isAuth} = require("./src/auth/middleware");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -32,10 +34,12 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 /** Swagger Initialization - END */
 
-app.use('/api/auth', authRouter)
-
 app.use('/api', indexRouter)
+app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
+
+app.use(isAuth)
+app.use('/api/chat', chatRouter)
 
 // db.authenticate()
 //   .then(() => console.log('Database connected...'))
