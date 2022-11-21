@@ -27,5 +27,6 @@ router.get('/', function (req, res) {
 
 router.get('/check-token', checkToken)
 router.post('/update/:user_code', isAuth, upload.single('image'), update)
+router.get('/:name', isAuth, update)
 
 module.exports = router

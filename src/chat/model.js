@@ -16,7 +16,7 @@ let model = {
                     ],
                 }
             ],
-            raw: true
+            raw: true,
         })
     }
 }

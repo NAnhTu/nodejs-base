@@ -9,7 +9,7 @@ let controller = {
   signUp: async (req, res) => {
     try {
       const {name, email, password} = req.body
-      const user = await userModel.getUser(email);
+      const user = await userModel.getByEmail(email);
       if (!user) {
         const hashPassword = await passwordHelper.generate(password);
         let code = generate.generate({
@@ -45,7 +45,7 @@ let controller = {
     try {
       const email = req.body.email.toLowerCase();
       const password = req.body.password;
-      const user = await userModel.getUser(email);
+      const user = await userModel.getByEmail(email);
 
       if (!user) return res.status(status.BAD_REQUEST)
         .send({
@@ -97,7 +97,7 @@ let controller = {
 
       const email = decoded.data.email; // Lấy username từ payload
 
-      const user = await userModel.getUser(email);
+      const user = await userModel.getByEmail(email);
       if (!user) {
         return res.status(status.BAD_REQUEST).send('User không tồn tại.');
       }

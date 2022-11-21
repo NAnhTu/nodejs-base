@@ -24,7 +24,7 @@ let isAuth = async (req, res, next) => {
         })
     }
 
-    req.user = await userModel.getUser(verified.data.email)
+    req.user = await userModel.getByEmail(verified.data.email)
 
     return next()
   } catch (e) {

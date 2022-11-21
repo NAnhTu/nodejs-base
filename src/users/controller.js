@@ -22,7 +22,7 @@ let controller = {
 
             const email = decoded.data.email; // Lấy username từ payload
 
-            const user = await userModel.getUser(email);
+            const user = await userModel.getByEmail(email);
             if (!user) {
                 return res.status(status.BAD_REQUEST).send({message: 'error'});
             }
@@ -30,6 +30,17 @@ let controller = {
             return res.status(status.OK).json(Object.assign(user, {token: bearer}));
         } catch (e) {
             res.status(status.INTERNAL_SERVER_ERROR).json(e);
+        }
+    },
+
+    getUserByName: async (req, res) => {
+        try {
+            const {name} = req.query
+            console.log(name);
+            let users = await userModel.getByName(name)
+            return res.status(status.OK).json(users)
+        } catch (e) {
+            return res.status(status.INTERNAL_SERVER_ERROR).json(e);
         }
     },
 
